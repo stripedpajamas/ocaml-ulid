@@ -78,3 +78,19 @@ let ulid ?(seed_time = (get_now ())) () =
   Buffer.add_string s (encode_time seed_time time_len);
   Buffer.add_string s (encode_random random_len);
   Buffer.contents s
+
+let monotonic_factory () =
+  let last_time = ref 0 in
+  let last_random = ref "" in
+  fun ?(seed_time = (get_now ())) () -> (
+    let s = Buffer.create (time_len + random_len) in
+    let () = if seed_time <= !last_time then (
+      last_random := increment_base_32(!last_random);
+    ) else (
+      last_time := seed_time;
+      last_random := encode_random random_len;
+    ) in
+    Buffer.add_string s (encode_time !last_time time_len);
+    Buffer.add_string s !last_random;
+    Buffer.contents s
+  )
