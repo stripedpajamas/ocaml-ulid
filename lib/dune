@@ -1,4 +1,4 @@
 (library
   (name ulid)
-  (libraries unix)
+  (libraries unix nocrypto nocrypto.unix)
 )

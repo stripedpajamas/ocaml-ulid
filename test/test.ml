@@ -30,7 +30,7 @@ let test_set_2 = [
 ]
 
 let encode_random_1 () =
-  Alcotest.(check int) "returns current length" 12 (String.length (Ulid.encode_random 12))
+  Alcotest.(check int) "returns current length" 12 (String.length (Ulid.encode_random 12 (Ulid.get_nocrypto_rng ())))
 
 let test_set_3 = [
   "encode random returns correct length", `Quick, encode_random_1;
@@ -44,9 +44,21 @@ let ulid_2 () =
   let time = (String.sub ulid 0 10) in
   Alcotest.(check string) "returns expected time encoded" "01ARYZ6S41" time
 
+(* let ulid_3 () =
+  let rec gen counter =
+    if counter = 0 then ()
+    else (
+      print_string (Ulid.ulid ());
+      print_newline ();
+      gen (counter - 1)
+    ) in
+  gen 10;
+  Alcotest.(check int) "help" 0 1 *)
+
 let test_set_4 = [
   "ulid returns correct length", `Quick, ulid_1;
   "ulid correctly encodes time", `Quick, ulid_2;
+  (* "ulid looks good", `Quick, ulid_3; *)
 ]
 
 (* Run it *)
