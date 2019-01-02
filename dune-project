@@ -1,3 +1,3 @@
 (lang dune 1.0)
 (name ulid)
-(version dev)
+(version 0.1)
