@@ -81,11 +81,19 @@ let increment_base_32 str =
 let get_now () =
   int_of_float (1000. *. (Unix.gettimeofday ()))
 
-let ulid ?(seed_time = get_now ()) ?(prng = get_nocrypto_rng ()) () =
+let ulid ?(seed_time = get_now ()) () =
   let s = Buffer.create (time_len + random_len) in
   Buffer.add_string s (encode_time seed_time time_len);
-  Buffer.add_string s (encode_random random_len prng);
+  Buffer.add_string s (encode_random random_len (get_nocrypto_rng ()));
   Buffer.contents s
+
+let ulid_factory ?(prng = get_nocrypto_rng ()) () =
+  fun ?(seed_time = (get_now ())) () -> (
+    let s = Buffer.create (time_len + random_len) in
+    Buffer.add_string s (encode_time seed_time time_len);
+    Buffer.add_string s (encode_random random_len prng);
+    Buffer.contents s
+  )
 
 let monotonic_factory ?(prng = get_nocrypto_rng ()) () =
   let last_time = ref 0 in
