@@ -13,7 +13,8 @@ let get_nocrypto_rng () =
     Nocrypto_entropy_unix.initialize ();
     rng_init := true;
   ) in
-  Nocrypto.Rng.Int.gen
+  let rng int = (Nocrypto.Rng.Int.gen int) in
+  rng
 
 let random_char prng () =
   let idx = prng encoding_len in
