@@ -1,6 +1,5 @@
 (library
   (name ulid)
   (public_name ulid)
-  (wrapped false)
   (libraries unix nocrypto nocrypto.unix)
 )
